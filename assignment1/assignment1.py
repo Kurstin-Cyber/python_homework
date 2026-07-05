@@ -23,6 +23,8 @@ def calc(a, b, operation="multiply"):
                 return a % b
             case "power":
                 return a ** b
+            case "int_divide":
+                return a // b
             case _:
                 return "Unknown Operation. Please try again."
     
