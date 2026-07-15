@@ -1,8 +1,8 @@
 import csv
 import os
 import custom_module
+import sys
 from datetime import datetime
-
 
 
 employees = {"fields": [], "rows": []}
@@ -10,23 +10,29 @@ employees = {"fields": [], "rows": []}
 
 def read_employees():
     global employees
-    
-    file_path = os.path.join(os.path.dirname(__file__), '../csv/employees.csv')
+    data_dict = {}
+    rows_list = []
     
     try:
-        with open(file_path, mode='r') as file:
+        with open('../csv/employees.csv', mode='r') as file:
             reader = csv.reader(file)
-            all_rows = list(reader)
-            employees['fields'] = all_rows[0]
-            employees['rows'] = all_rows[1:]
+            fields = next(reader)
+            data_dict['fields'] = fields
+            for row in reader:
+
+             rows_list.append(row)
+
+            data_dict['rows'] = rows_list
     except Exception as e:
-        print(f'An exception occured: {e}')
-        exit()
-    return employees
+        print(f'Exception: {type(e).__name__}')
+        print(f'Exception Details: {e}')
+        sys.exit(1)
 
-read_employees()
+    return data_dict
+employees = read_employees()
 
-
+print(employees)
+           
 
 
 def employee_find_2(employee_id):
@@ -87,8 +93,7 @@ def get_this_value():
 
 def set_that_secret(new_secret):
     
-    custom_module.set_secret(new_secret)
-    print(f"The updated secret is: {custom_module.secret}")
+    return custom_module.set_secret(new_secret)
     
 
 def get_minutes_data(filepath):
@@ -131,12 +136,20 @@ print("Minutes List:", minutes_list)
 def write_sorted_list():
     sorted_data = sorted(minutes_list, key=lambda x: x[1])
 
-    formatted_data = [(item[0], item[1].strftime("%B %d, %Y"))
-                      for item in sorted_data]
+    
     with open('./minutes.csv', 'w', newline='') as file:
         writer = csv.writer(file)
+
         writer.writerow(minutes1['fields'])
-        writer.writerows(formatted_data)
+
+        for row in sorted_data:
+            new_row =list(row)
+
+            if isinstance(new_row[1], datetime):
+                new_row[1] = new_row[1].strftime("%Y-%m-%d %H:%M:%S")
+            writer.writerow(new_row)
+    
+    formatted_data = [(item[0], item[1].strftime('%B %d, %Y')) for item in sorted_data]
     return formatted_data
 
 sorted_minutes = write_sorted_list()
