@@ -2,140 +2,100 @@ import csv
 import os
 import custom_module
 from datetime import datetime
-employees = None
 
-employee_id_column = None
+
+
+employees = {"fields": [], "rows": []}
+
 
 def read_employees():
     global employees
-
-
-    employee_dict = {"fields": [], "rows": []}
-
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(script_dir, '..', 'csv', 'employees.csv')
-
+    
+    file_path = os.path.join(os.path.dirname(__file__), '../csv/employees.csv')
+    
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, mode='r') as file:
             reader = csv.reader(file)
-            header = next(reader)
-
-            employee_dict["fields"] = header
-            employee_dict["rows"] = list(reader)
-
-            employees = employee_dict
-            return employees
-        
+            all_rows = list(reader)
+            employees['fields'] = all_rows[0]
+            employees['rows'] = all_rows[1:]
     except Exception as e:
-        print(f"An error occurred: {e}")
-        employees = employee_dict
-        return employee_dict
-
-
-
-def column_index(column_name):
-   
-   return employees["fields"].index(column_name)
-
+        print(f'An exception occured: {e}')
+        exit()
+    return employees
 
 read_employees()
-employee_id_column = column_index("employee_id")
-
-if __name__ == "__main__":
-    
-    print(f"Employee ID column index is: {employee_id_column}")
 
 
-def first_name(row_number):
-    first_name_index = column_index("first_name")
 
-    row_data = employees["rows"][row_number]
-
-    name = row_data[first_name_index]
-
-    return name
-
-print(first_name(0))
-
-
-def employee_find(employee_id):
-    
-    def employee_match(row): 
-         
-        return int(row[employee_id_column]) == employee_id
-    
-    matches = list(filter(employee_match, employees['rows']))
-
-    return matches
-
-print(employee_find(4))
 
 def employee_find_2(employee_id):
-    matches = list(filter(lambda row: int(row[employee_id_column]) == employee_id, employees['rows']))
-
-    return matches
-
+   matches = list(filter(lambda row : int(row[employee_id_column]) == int(employee_id), employees['rows']))
+   return matches
 
 def sort_by_last_name():
-    last_index = column_index("last_name")
-    employees['rows'].sort(key=lambda row: row[last_index])
-
+    last_name_index = column_index('last_name')
+    employees['rows'].sort(key=lambda row: row[last_name_index])
     return employees['rows']
 
 
 
 def employee_dict(row):
-    return {header: value for header, value in zip(employees['fields'], row)
-            if header != "employee_id"}
+   
+   data_dict = {
+        header:value    
+        for header, value in zip(employees['fields'], row)
+        if header != 'employee_id'
+   }
 
-if __name__ == "__main__":
-    sample_row = employees["rows"][0]
-    print(employee_dict(sample_row))
+   return data_dict
 
 
-def all_employees_dict(employees=None):
-    if employees is None:
-        employees = globals().get('employees')
 
-    result = {}
+def column_index(header_name):
+    return employees['fields'].index(header_name)
 
-    for row in employees['rows']:
-        emp_data = employee_dict(row)
+employee_id_column = column_index('employee_id')
 
-        emp_id = row[employee_id_column]
+first_name_column = column_index('first_name')
 
-        result[emp_id] = emp_data
+
+def employee_find(employee_id):
+    def employee_match(row):
+        return int(row[employee_id_column]) == int(employee_id)
     
-    return result
+    matches = list(filter(employee_match, employees['rows']))
+    return matches
+
+
+
+def first_name(row_number):
+    return employees['rows'][row_number][first_name_column]
+
+first_name_column = column_index('first_name')
+
+
+def all_employees_dict():
+   return {emp[employee_id_column]: employee_dict(emp) for emp in employees['rows']}
 
 
 
 def get_this_value():
     
-    return"ABC"
-
-if __name__ == "__main__":
-    
-    value = get_this_value()
-
-    print(f"The environment variable THISVALUE is: {value}")
+    return os.getenv('THISVALUE')
 
 
 def set_that_secret(new_secret):
-    print(f"The secret is: {custom_module.secret}")
-
-    custom_module.set_secret('swordfish')
+    
+    custom_module.set_secret(new_secret)
     print(f"The updated secret is: {custom_module.secret}")
     
 
 def get_minutes_data(filepath):
     with open(filepath, 'r') as file:
         reader = csv.reader(file)
-
         fields = next(reader)
-
         rows = [tuple(row) for row in reader]
-
     return {"fields": fields, "rows": rows}
 
 def read_minutes():
@@ -175,13 +135,13 @@ def write_sorted_list():
                       for item in sorted_data]
     with open('./minutes.csv', 'w', newline='') as file:
         writer = csv.writer(file)
-
         writer.writerow(minutes1['fields'])
-
         writer.writerows(formatted_data)
-
     return formatted_data
 
 sorted_minutes = write_sorted_list()
 
 print('Sorted Minutes List', sorted_minutes)
+
+sort_by_last_name()
+print(employees)
