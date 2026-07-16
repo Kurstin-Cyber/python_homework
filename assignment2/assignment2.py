@@ -29,15 +29,34 @@ def read_employees():
         sys.exit(1)
 
     return data_dict
-employees = read_employees()
-
 print(employees)
-           
+
+
+employees = read_employees()
+employee_id_column = employees['fields'].index('employee_id')
+first_name_column = employees['fields'].index('first_name')  
+
+def column_index(header_name):
+    return employees['fields'].index(header_name)
+
+
+def first_name(row_number):
+    return employees['rows'][row_number][first_name_column]
+
+
+def employee_find(employee_id):
+    def employee_match(row):
+        return int(row[employee_id_column]) == int(employee_id)
+    
+    matches = list(filter(employee_match, employees['rows']))
+    return matches
+
 
 
 def employee_find_2(employee_id):
    matches = list(filter(lambda row : int(row[employee_id_column]) == int(employee_id), employees['rows']))
    return matches
+
 
 def sort_by_last_name():
     last_name_index = column_index('last_name')
@@ -56,29 +75,6 @@ def employee_dict(row):
 
    return data_dict
 
-
-
-def column_index(header_name):
-    return employees['fields'].index(header_name)
-
-employee_id_column = column_index('employee_id')
-
-first_name_column = column_index('first_name')
-
-
-def employee_find(employee_id):
-    def employee_match(row):
-        return int(row[employee_id_column]) == int(employee_id)
-    
-    matches = list(filter(employee_match, employees['rows']))
-    return matches
-
-
-
-def first_name(row_number):
-    return employees['rows'][row_number][first_name_column]
-
-first_name_column = column_index('first_name')
 
 
 def all_employees_dict():
@@ -117,8 +113,8 @@ print("Minutes 2:", minutes2)
 def create_minutes_set():
     set1 = set(minutes1['rows'])
     set2 = set(minutes2['rows'])
-
     return set1.union(set2)
+
 minutes_set = create_minutes_set()
 
 print("Minutes Set:", minutes_set)
@@ -134,27 +130,25 @@ minutes_list = create_minutes_list()
 print("Minutes List:", minutes_list)
 
 def write_sorted_list():
-    sorted_data = sorted(minutes_list, key=lambda x: x[1])
+    global minutes_list
+    minutes_list.sort( key=lambda x: x[1])
+    formatted_data = [(item[0], item[1].strftime('%B %d, %Y')) for item in minutes_list]
 
     
     with open('./minutes.csv', 'w', newline='') as file:
         writer = csv.writer(file)
-
         writer.writerow(minutes1['fields'])
+        writer.writerows(formatted_data)
 
-        for row in sorted_data:
-            new_row =list(row)
-
-            if isinstance(new_row[1], datetime):
-                new_row[1] = new_row[1].strftime("%Y-%m-%d %H:%M:%S")
-            writer.writerow(new_row)
-    
-    formatted_data = [(item[0], item[1].strftime('%B %d, %Y')) for item in sorted_data]
     return formatted_data
 
-sorted_minutes = write_sorted_list()
+if __name__ == '__main__':
+    print('Employees:\n', employees)
+    print('Minutes Set:\n', minutes_set)
+    print('Minutes List:\n', minutes_list)
 
-print('Sorted Minutes List', sorted_minutes)
+sorted_minutes = write_sorted_list()
+print('Sorted Minutes List:\n', sorted_minutes)
 
 sort_by_last_name()
-print(employees)
+print('Sorted Employees:\n', employees)
