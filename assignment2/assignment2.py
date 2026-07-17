@@ -5,12 +5,11 @@ import sys
 from datetime import datetime
 
 
-employees = {"fields": [], "rows": []}
 
 
 def read_employees():
     global employees
-    data_dict = {}
+    data_dict = {'fields': [], 'rows': []}
     rows_list = []
     
     try:
