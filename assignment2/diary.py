@@ -15,9 +15,9 @@ try:
            prompt = "What else? "
 
 except Exception as e:
-   exception_name = type(e).__name__
-   print(f'An exception occurred. {exception_name}')
-      
+  print('An exception occurred.')
+  print(type(e).__name__)
+  trace_back = traceback.extract_tb(e.__traceback__)
         
 
 

@@ -24,8 +24,8 @@ def read_employees():
 
             data_dict['rows'] = rows_list
     except Exception as e:
-        print(f'Exception: {type(e).__name__}')
-        print(f'Exception Details: {e}')
+        print('An exception occurred.')
+        print(type(e).__name__)
         sys.exit(1)
 
     return data_dict
