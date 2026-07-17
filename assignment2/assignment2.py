@@ -31,13 +31,15 @@ def read_employees():
     return data_dict
 
 
-
 employees = read_employees()
-employee_id_column = employees['fields'].index('employee_id')
-first_name_column = employees['fields'].index('first_name')  
+
 
 def column_index(header_name):
+
     return employees['fields'].index(header_name)
+
+employee_id_column = column_index('employee_id')
+first_name_column = column_index('first_name')
 
 
 def first_name(row_number):
@@ -127,15 +129,15 @@ minutes_list = create_minutes_list()
 
 
 
-def write_sorted_list():
+def write_sorted_list(minutes_list, field_names):
     sorted_list = sorted(minutes_list, key=lambda x: x[1])
  
-    formatted_data = [(item[0], item[1].strftime('%B %d, %Y')) for item in sorted_list]
+    formatted_data = [[item[0], item[1].strftime('%B %d, %Y')] for item in sorted_list]
 
     
     with open('./minutes.csv', 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(minutes1['fields'])
+        writer.writerow(field_names)
         writer.writerows(formatted_data)
 
     return formatted_data
@@ -147,7 +149,7 @@ if __name__ == '__main__':
     print('Minutes Set:\n', minutes_set)
     print('Minutes List:\n', minutes_list)
 
-    sorted_minutes = write_sorted_list()
+    sorted_minutes = write_sorted_list(minutes_list, minutes1['fields'])
     print('Sorted Minutes List:\n', sorted_minutes)
 
     sort_by_last_name()
