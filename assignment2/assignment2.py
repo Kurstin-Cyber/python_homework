@@ -29,7 +29,7 @@ def read_employees():
         sys.exit(1)
 
     return data_dict
-print(employees)
+
 
 
 employees = read_employees()
@@ -106,8 +106,6 @@ def read_minutes():
 
 minutes1, minutes2 = read_minutes()
 
-print("Minutes 1:", minutes1)
-print("Minutes 2:", minutes2)
 
 
 def create_minutes_set():
@@ -117,7 +115,7 @@ def create_minutes_set():
 
 minutes_set = create_minutes_set()
 
-print("Minutes Set:", minutes_set)
+
 
 def create_minutes_list():
     minutes_list_raw = list(minutes_set)
@@ -127,12 +125,12 @@ def create_minutes_list():
 
 minutes_list = create_minutes_list()
 
-print("Minutes List:", minutes_list)
+
 
 def write_sorted_list():
-    global minutes_list
-    minutes_list.sort( key=lambda x: x[1])
-    formatted_data = [(item[0], item[1].strftime('%B %d, %Y')) for item in minutes_list]
+    sorted_list = sorted(minutes_list, key=lambda x: x[1])
+ 
+    formatted_data = [(item[0], item[1].strftime('%B %d, %Y')) for item in sorted_list]
 
     
     with open('./minutes.csv', 'w', newline='') as file:
@@ -144,11 +142,13 @@ def write_sorted_list():
 
 if __name__ == '__main__':
     print('Employees:\n', employees)
+    print('Minutes1:', minutes1)
+    print('Minutes2:', minutes2)
     print('Minutes Set:\n', minutes_set)
     print('Minutes List:\n', minutes_list)
 
-sorted_minutes = write_sorted_list()
-print('Sorted Minutes List:\n', sorted_minutes)
+    sorted_minutes = write_sorted_list()
+    print('Sorted Minutes List:\n', sorted_minutes)
 
-sort_by_last_name()
-print('Sorted Employees:\n', employees)
+    sort_by_last_name()
+    print('Sorted Employees:\n', employees)
