@@ -9,13 +9,12 @@ try:
        while True:
            line = input(prompt)
 
-           file.write(line + "\n")
-
            if line == "done for now":
-              file.write('done for now\n')
+              
               break
            
            file.write(line + "\n")
+           
            prompt = "What else? "
 
 except Exception as e:

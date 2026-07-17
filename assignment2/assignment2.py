@@ -129,15 +129,21 @@ minutes_list = create_minutes_list()
 
 
 
-def write_sorted_list(minutes_list, field_names):
+def write_sorted_list():
+    global minutes_list, minutes1
+
+    
     sorted_list = sorted(minutes_list, key=lambda x: x[1])
  
-    formatted_data = [[item[0], item[1].strftime('%B %d, %Y')] for item in sorted_list]
-
+    formatted_data = []
+    for item in sorted_list:
+        date_str = item[1].strftime('%B %d, %Y')
+        formatted_data.append((item[0], date_str))
+    
     
     with open('./minutes.csv', 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(field_names)
+        writer.writerow(minutes1['fields'])
         writer.writerows(formatted_data)
 
     return formatted_data
@@ -149,7 +155,7 @@ if __name__ == '__main__':
     print('Minutes Set:\n', minutes_set)
     print('Minutes List:\n', minutes_list)
 
-    sorted_minutes = write_sorted_list(minutes_list, minutes1['fields'])
+    sorted_minutes = write_sorted_list()
     print('Sorted Minutes List:\n', sorted_minutes)
 
     sort_by_last_name()
