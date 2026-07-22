@@ -1,26 +1,27 @@
 def type_converter(type_of_output):
     def decorator(func):
         def wrapper(*args, **kwargs):
-            result =  func(*args, **kwargs)
-            return type_of_output(result)
+            try:
+                result = func(*args, **kwargs)
+                return type_of_output(result)
+            except (ValueError, TypeError) as e:
+                
+                print(f'Error converting type: {e}')
+                return None
         return wrapper
     return decorator
+    
+    
 
-@type_converter(str)
-def return_int():
-    return 5
 
 @type_converter(int)
-def return_string():
-    return "not a number"
+def convert_value(val):
+    return val
+
 
 if __name__ == '__main__':
-    y = return_int()
-    print(f'Result of return_int (now {type(y).__name__}): {y}')
-
-    try:
-        y = return_string()
-        print(f'Result of return_int (now{type(y).__name__}: {y})')
+    y = convert_value("42")
+    if y is not None:
+        print(type(y).__name__)
     
-    except ValueError:
-        print("Can't convert that string to an interger.")
+    convert_value("not_an_integer")

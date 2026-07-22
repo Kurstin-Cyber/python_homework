@@ -14,7 +14,7 @@ def make_hangman(secret_word):
                 display_word += '_'
                 all_guessed = False
 
-        print(f'Current word: {display_word}')
+        print(display_word)
 
         return all_guessed
     

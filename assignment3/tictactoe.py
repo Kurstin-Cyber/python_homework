@@ -1,5 +1,5 @@
 
-class TictacToeException(Exception):
+class TictactoeException(Exception):
     def __init__(self, message):
         self.message = message
         super().__init__(self.message)
@@ -28,14 +28,14 @@ class Board:
     
     def move(self, move_string):
         if move_string not in Board.valid_moves:
-            raise TictacToeException("That's not a valid move.")
+            raise TictactoeException("That's not a valid move.")
         
         move_index = Board.valid_moves.index(move_string)
         row = move_index // 3
         column = move_index % 3
 
         if self.board_array[row][column] != " ":
-            raise TictacToeException("That spot is taken.")
+            raise TictactoeException("That spot is taken.")
         
         self.board_array[row][column] = self.turn
         self.last_move = move_string
@@ -106,5 +106,5 @@ if __name__ == "__main__":
 
         try:
             game_board.move(move_prompt)
-        except TictacToeException as e:
+        except TictactoeException as e:
             print(f"\n[Error] {e.message}\n")

@@ -4,7 +4,7 @@ logger = logging.getLogger(__name__ + '_parameter_log')
 logger.setLevel(logging.INFO)
 
 if not logger.handlers:
-    logger.addHandler(logging.FileHandler('./decorator.log', 'w'))
+    logger.addHandler(logging.FileHandler('./decorator.log', 'a'))
 
 def logger_decorator(func):
     def wrapper(*args, **kwargs):
@@ -30,11 +30,13 @@ def greet():
 
 @logger_decorator
 def p_args(*args):
+    print(f'Checking values: {args}')
     return True
 
 
 @logger_decorator
 def get_decorator_info(**kwargs):
+    print(f'Keyword config received: {kwargs}')
     return logger_decorator
 
 

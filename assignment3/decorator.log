@@ -18,3 +18,23 @@ function: get_decorator_info
 positional parameters: none
 keyword parameters: {'config': 'debug', 'verbose': True}
 return: <function logger_decorator at 0x000001D3C2923740>
+
+function: greet
+positional parameters: none
+keyword parameters: none
+return: None
+
+function: p_args
+positional parameters: [10, 20, 30]
+keyword parameters: none
+return: True
+
+function: get_decorator_info
+positional parameters: none
+keyword parameters: {'test_key': 'test_value'}
+return: <function logger_decorator at 0x000002A855843740>
+
+function: get_decorator_info
+positional parameters: none
+keyword parameters: {'config': 'debug', 'verbose': True}
+return: <function logger_decorator at 0x000002A855843740>
