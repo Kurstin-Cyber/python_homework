@@ -1,13 +1,10 @@
 def type_converter(type_of_output):
     def decorator(func):
         def wrapper(*args, **kwargs):
-            try:
-                result = func(*args, **kwargs)
-                return type_of_output(result)
-            except (ValueError, TypeError) as e:
-                
-                print(f'Error converting type: {e}')
-                return None
+
+            result = func(*args, **kwargs)
+
+            return type_of_output(result) 
         return wrapper
     return decorator
     
@@ -23,7 +20,7 @@ def return_string():
     return "not a number"
 
 if __name__ == '__main__':
-    y = return_int("42")
+    y = return_int()
     print(type(y).__name__)
 
     try:

@@ -23,7 +23,7 @@ class Vector(Point):
         
 
     def __str__(self):
-            return f'Vector<{self.x}, {self.y}>'
+            return f"Vector Coordinates -> [X: {self.x}, Y: {self.y}]"
     
     def __add__(self, other):
          if not isinstance(other, Point):

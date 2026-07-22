@@ -28,15 +28,17 @@ class Board:
         return "".join(lines)
 
     def move(self, move_string):
-        if not move_string in Board.valid_moves:
+        if move_string not in Board.valid_moves:
             raise TictactoeException("That's not a valid move.")
         move_index = Board.valid_moves.index(move_string)
-        row = move_index // 3 # row
-        column = move_index % 3 # column
+        row = move_index // 3
+        column = move_index % 3
         if self.board_array[row][column] != " ":
             raise TictactoeException("That spot is taken.")
+        
         self.board_array[row][column] = self.turn
         self.last_move = move_string
+        
         if self.turn == "X":
             self.turn = "O"
         else:
@@ -48,42 +50,41 @@ class Board:
             for j in range(3):
                 if self.board_array[i][j] == " ":
                     cat = False
-                else:
-                    continue
-                break
+                    break
             else:
                 continue
             break
-        if (cat):
+        if cat:
             return (True, "Cat's Game.")
+        
         win = False
-        for i in range(3): # check rows
+        for i in range(3): 
             if self.board_array[i][0] != " ":
                 if self.board_array[i][0] == self.board_array[i][1] and self.board_array[i][1] == self.board_array[i][2]:
                     win = True
                     break
         if not win:
-            for i in range(3): # check columns
+            for i in range(3): 
                 if self.board_array[0][i] != " ":
                     if self.board_array[0][i] == self.board_array[1][i] and self.board_array[1][i] == self.board_array[2][i]:
                         win = True
                         break
         if not win:
-            if self.board_array[1][1] != " ": # check diagonals
-                if self.board_array[0][0] ==  self.board_array[1][1] and self.board_array[2][2] == self.board_array[1][1]:
+            if self.board_array[1][1] != " ":
+                if self.board_array[0][0] == self.board_array[1][1] and self.board_array[2][2] == self.board_array[1][1]:
                     win = True
-                if self.board_array[0][2] ==  self.board_array[1][1] and self.board_array[2][0] == self.board_array[1][1]:
+                if self.board_array[0][2] == self.board_array[1][1] and self.board_array[2][0] == self.board_array[1][1]:
                     win = True
+
         if not win:
-            if self.turn == "X": 
+            if self.turn == "X":
                 return (False, "X's turn.")
             else:
                 return (False, "O's turn.")
         else:
-            if self.turn == "O":
-                return (True, "X wins!")
-            else:
-                return (True, "O wins!")
+          
+            winning_player = "O" if self.turn == "X" else "X"
+            return (True, f"{winning_player} has won")
 
 
 if __name__ == "__main__":
@@ -91,7 +92,6 @@ if __name__ == "__main__":
     print("--- Welcome to Tic Tac Toe ---")
     print(game_board)
 
-    # Continue the loop until whats_next() reports the game is over
     while True:
         game_over, status_message = game_board.whats_next()
         if game_over:
@@ -100,7 +100,6 @@ if __name__ == "__main__":
 
         move_input = input(f"{status_message} Enter your move: ").strip().lower()
         
-        # Prompt for each move and use board.move() inside a try block with an except for TictactoeException
         try:
             game_board.move(move_input)
             print("\nCurrent Board:")
