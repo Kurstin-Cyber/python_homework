@@ -1,3 +1,4 @@
+
 class TictacToeException(Exception):
     def __init__(self, message):
         self.message = message
@@ -5,43 +6,105 @@ class TictacToeException(Exception):
 
 
 class Board:
+    valid_moves = [
+        "upper left", "upper center", "upper right", 
+        "middle left", "center", "middle right", 
+        "lower left", "lower center", "lower right"
+    ]
+
     def __init__(self):
-
-        self.board_array = [[' ' for _ in range(3) ]for _ in range(3)]
+        self.board_array = [[" " for _ in range(3)] for _ in range(3)]
         self.turn = "X"
+        self.last_move = None
 
-    def display(self):
-        print('\nBoard State:')
-        for r_idx, row in enumerate(self.board_array):
-            print(' | '.join(row))
-            if r_idx < 2:
-                print('---------')
-        print(f'Current Turn: {self.turn}\n')
+    def __str__(self):
+        lines = []
+        lines.append(f" {self.board_array[0][0]} | {self.board_array[0][1]} | {self.board_array[0][2]} \n")
+        lines.append("-----------\n")
+        lines.append(f" {self.board_array[1][0]} | {self.board_array[1][1]} | {self.board_array[1][2]} \n")
+        lines.append("-----------\n")
+        lines.append(f" {self.board_array[2][0]} | {self.board_array[2][1]} | {self.board_array[2][2]} \n")
+        return "".join(lines)
     
-    def make_move(self, row, col):
-        if not (0 <= row < 3 and 0 <= col < 3):
-            raise TictacToeException(f'Invalid move: ({row}, {col}) is out of bounds (0-2).')
-
-        if self.board_array[row][col] != " ":
-            raise TictacToeException(f'Invalid move: Position ({row}, {col}) is already occupied.')
+    def move(self, move_string):
+        if move_string not in Board.valid_moves:
+            raise TictacToeException("That's not a valid move.")
         
+        move_index = Board.valid_moves.index(move_string)
+        row = move_index // 3
+        column = move_index % 3
 
-        self.board_array[row][col] = self.turn
-        self.turn = 'O' if self.turn == 'X' else 'X'
+        if self.board_array[row][column] != " ":
+            raise TictacToeException("That spot is taken.")
+        
+        self.board_array[row][column] = self.turn
+        self.last_move = move_string
 
-if __name__ == '__main__':
+        if self.turn == "X":
+            self.turn = "O"
+        else:
+            self.turn = "X"
+
+    def whats_next(self):
+        cat = True
+        for i in range(3):
+            for j in range(3):
+                if self.board_array[i][j] == " ":
+                    cat = False
+                    break
+            if not cat:
+                break
+        
+        if cat:
+            return (True, "Cat's Game.")
+        
+        win = False
+        for i in range(3):
+            if self.board_array[i][0] != " ":
+                if self.board_array[i][0] == self.board_array[i][1] and self.board_array[i][1] == self.board_array[i][2]:
+                    win = True
+                    break
+        if not win:
+            for i in range(3):
+                if self.board_array[0][i] != " ":
+                    if self.board_array[0][i] == self.board_array[1][i] and self.board_array[1][i] == self.board_array[2][i]:
+                        win = True
+                        break
+        if not win:
+            if self.board_array[1][1] != " ":
+                if self.board_array[0][0] == self.board_array[1][1] and self.board_array[2][2] == self.board_array[1][1]:
+                    win = True
+                if self.board_array[0][2] == self.board_array[1][1] and self.board_array[2][0] == self.board_array[1][1]:
+                    win = True
+
+        if not win:
+            if self.turn == "X":
+                return (False, "X's turn.")
+            else:
+                return (False, "O's turn.")
+        else:
+            if self.turn == "O":
+                return (True, "X wins!")
+            else:
+                return (True, "O wins!")    
+
+
+if __name__ == "__main__":
     game_board = Board()
-    game_board.display()
+    print("--- Welcome to Tic Tac Toe ---")
+    print("Valid moves: upper left, upper center, upper right, middle left, center, middle right, lower left, lower center, lower right\n")
 
-    try:
-        game_board.make_move(1,1)
-        game_board.display()
+    while True:
+        print(game_board)
+        game_over, status_message = game_board.whats_next()
+        print(status_message)
 
-        game_board.make_move(0,0)
-        game_board.display()
+        if game_over:
+            break
+        
+        move_prompt = input(f"Enter your move for {game_board.turn}: ").strip().lower()
 
-        print('Testing duplicate move exception handling:')
-        game_board.make_move(1, 1)
-
-    except TictacToeException as e:
-        print(f'Caught expected TicTacToe Error: {e.message}')
+        try:
+            game_board.move(move_prompt)
+        except TictacToeException as e:
+            print(f"\n[Error] {e.message}\n")
