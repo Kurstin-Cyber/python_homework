@@ -14,14 +14,22 @@ def type_converter(type_of_output):
     
 
 
-@type_converter(int)
-def convert_value(val):
-    return val
+@type_converter(str)
+def return_int():
+    return 5
 
+@type_converter(int)
+def return_string():
+    return "not a number"
 
 if __name__ == '__main__':
-    y = convert_value("42")
-    if y is not None:
-        print(type(y).__name__)
+    y = return_int("42")
+    print(type(y).__name__)
+
+    try:
+        y =return_string()
+        print("shouldn't get here!")
+    except ValueError:
+        print("Can't convert that string to an integer!")
     
-    convert_value("not_an_integer")
+    

@@ -34,17 +34,24 @@ class Vector(Point):
 if __name__ == '__main__':
         p1 = Point(1, 2)
         p2 = Point(4, 6)
+        p3 = Point(1, 2)
+        p4 = Point(7, 10)
 
-        print('--- Point Demonstration ---')
+     
         print(f'Point 1: {p1}')
         print(f'Point2:  {p2}')
-        print(f'Distance between p1 and p2: {p1.distance_to(p2)}')
+
+        print(f'Is Point 1 equal to Point 3 {p3}?: {p1 == p3}')
+        print(f'Is Point 1 equal to Point 2 {p2}?: {p1 == p2}')
+
+        dist = p1.distance_to(p2)
+        print(f'Euclidean distance between {p1} and {p2}: {dist:.2f}\n')
 
         v1 = Vector(3, 4)
         v2 = Vector(1, 2)
-
-        print('\n---Vector Demonstration ---')
-        print(f'Vector 1 (custom string representation): {v1}')
-        print(f'Vector 2 (custom string representation): {v2}')
         v3 = v1 + v2
-        print(f'Vextor Addition (v1 + v2): {v1} + {v2} = {v3}')
+    
+        print(f'Vector 1: {v1}')
+        print(f'Vector 2: {v2}')
+     
+        print(f'Vextor Addition (v1 + v2): {v3}')

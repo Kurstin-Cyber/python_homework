@@ -1,17 +1,16 @@
 import logging 
+import functools
 
 logger = logging.getLogger(__name__ + '_parameter_log')
 logger.setLevel(logging.INFO)
-
-if not logger.handlers:
-    logger.addHandler(logging.FileHandler('./decorator.log', 'a'))
-
+logger.addHandler(logging.FileHandler('./decorator.log', 'a'))
+   
 def logger_decorator(func):
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        pos_params = list(args) if args else 'none'
-        kw_params = kwargs if kwargs else 'none'
-
         result = func(*args, **kwargs)
+        pos_params = str(list(args)) if args else 'none'
+        kw_params = str(kwargs) if kwargs else 'none'
 
         log_entry = (
             f'\nfunction: {func.__name__}\n'
