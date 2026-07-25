@@ -50,7 +50,6 @@ print(more_employees)
 
 
 
-
 first_three = more_employees.head(3)
 print(first_three)
 
@@ -88,11 +87,9 @@ clean_data['Salary'] = clean_data['Salary'].fillna(median_salary)
 
 print(clean_data)
 
-clean_data['Hire Date'] = pd.to_datetime(clean_data['Hire Date'], errors='coerce')
-clean_data['Hire Date'] = clean_data['Hire Date'].fillna(pd.to_datetime('2020-01-01'))
-print(clean_data)
+clean_data['Hire Date'] = pd.to_datetime(clean_data['Hire Date'].isna().sum(), errors='coerce')
 
-clean_data['Name'] = clean_data['Name'].str.strip().str.upper()
+clean_data['Name'] = clean_data['Name'].str.strip()
 clean_data['Department'] = clean_data['Department'].str.strip().str.upper()
 
 print(clean_data)
