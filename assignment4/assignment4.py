@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import os
 
 
 data = ({
@@ -74,7 +75,7 @@ print(clean_data)
 clean_data['Age'] =pd.to_numeric(clean_data['Age'], errors='coerce')
 print(clean_data)
 
-clean_data['Salary'] = clean_data['Salary'].replace(['unknown', 'n/a', 'N/A'], pd.NA)
+clean_data['Salary'] = clean_data['Salary'].replace(['unknown', 'n/a'], pd.NA)
 clean_data['Salary'] = pd.to_numeric(clean_data['Salary'], errors='coerce')
 
 print(clean_data)
@@ -82,12 +83,12 @@ print(clean_data)
 mean_age = clean_data['Age'].mean()
 median_salary = clean_data['Salary'].median()
 
-clean_data['Age'] = clean_data['Age'].fillna(mean_age)
-clean_data['Salary'] = clean_data['Salary'].fillna(median_salary)
+clean_data['Age'] = clean_data['Age'].fillna(clean_data['Age'].mean())
+clean_data['Salary'] = clean_data['Salary'].fillna(clean_data['Salary'].median())
 
 print(clean_data)
 
-clean_data['Hire Date'] = pd.to_datetime(clean_data['Hire Date'].isna().sum(), errors='coerce')
+clean_data['Hire Date'] = pd.to_datetime(clean_data['Hire Date'], format='mixed', errors='coerce')
 
 clean_data['Name'] = clean_data['Name'].str.strip()
 clean_data['Department'] = clean_data['Department'].str.strip().str.upper()
