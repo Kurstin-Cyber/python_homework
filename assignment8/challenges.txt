@@ -1,0 +1,13 @@
+Assignment 8 Challenges and Resolutions:
+
+1. Dynamic Content Loading and Element Selection:
+Challenges: Web pages rendered dynamically (like the Durhan Library catalog) sometimes cause Selenium to throw NoSuchElementException because elements haven't fully loaded yet.
+Resolution: Used explicit/implicit waits (`driver.implicitly_wait`) and tested selectors incrementally via browser Developer Tools to ensure tags and class names were exact before writing loop logic.
+
+2. XPath Selectors for Structured Data:
+Challenge: Finding specific items like the OWASP Top Ten list required precise path filtering to seperate core content links from general navigation footers or headers.
+Resolution: Leveraged targetd XPath expression filtering by container classes (`//div` and `//ol//li//a`) to isolate only the relevant vulnerability elements.
+
+3. Handling Multi-Valued Attributes (Multiple Authors):
+Challenge: Certain search results returned multiple author names linked individually, which wouoold break flat dictionary mappings if not grouped properly.
+Resolution: Collected all matching author elements into a Python list comprehensions and joined them cleanly using a semicolon string join (`"; ".join()).
