@@ -6,36 +6,45 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 options = webdriver.ChromeOptions()
 driver = webdriver.Chrome(
-    service=Service(ChromeDriverManager().install(), options=options)
+    service=Service(ChromeDriverManager().install()), options=options
 )
 
 try:
-    url = 'https://owasp.org/www-project-top-ten/'
+    url = "https://owasp.org/www-project-top-ten/"
     driver.get(url)
+    driver.implicitly_wait(6)
 
-    driver.implicitly_wait(5)
-
+    
     risk_elements = driver.find_elements(
-        By.XPATH, "//div[contains(@class, 'container')]//ol//li//a" )
+        By.XPATH, "//main//a[contains(@href, 'A0') or contains(@href, '2021')]"
+    )
+
+   
     if not risk_elements:
-        risk_elements = driver.find_elements(
-            By.XPATH, "//main//a[contains(@href, 'A0)]"
-        )
+        risk_elements = driver.find_elements(By.XPATH, "//main//a")
+
     results = []
+    seen_titles = set()
 
     for element in risk_elements:
         title = element.text.strip()
-        link = element.get_attribut('href')
+        link = element.get_attribute("href")
 
-        if title and link:
-            results.append({"Vulnerability": title, "Link": link})
-    
+        
+        if title and link and title not in seen_titles and len(results) < 10:
+           
+            if any(char.isdigit() for char in title) or "A0" in link:
+                seen_titles.add(title)
+                results.append({"Vulnerability": title, "Link": link})
+
+   
     results = results[:10]
 
-    print(pd.DataFrame(results))
-    
     df = pd.DataFrame(results)
-    df.to_csv('owasp_top_10.csv', index=False)
+    print(df)
+
+    df.to_csv("owasp_top_10.csv", index=False)
     print("Successfully saved data to owasp_top_10.csv")
+
 finally:
     driver.quit()

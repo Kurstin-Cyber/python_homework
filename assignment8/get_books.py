@@ -16,7 +16,6 @@ driver = webdriver.Chrome(
 try:
     url = 'https://durhamcounty.bibliocommons.com/v2/search?query=learning%20spanish&searchType=smart'
     driver.get(url)
-
     driver.implicitly_wait(5)
 
     book_items = driver.find_elements(
@@ -37,31 +36,31 @@ try:
         try:
 
             author_elements = item.find_elements(
-                By.CSS_SELECTOR, 'author-link'
+                By.CSS_SELECTOR, '.author-link'
             )
-            authors = [author.text.strip() for author in author_elements]
-
+            authors = [a.text.strip() for a in author_elements if a.text.strip()]
             author_text = '; '.join(authors) if authors else 'N/A'
         except Exception:
             author_text = 'N/A'
 
         try:
-            format_div = item.find_element(By.CSS_SELECTOR, 'cp-format-info')
-            format_span = format_div.find_element(
-                By.CSS_SELECTOR, 'cp-screen-reader-message')
-            format_year_text = format_span.text.strip()
+            format_element = item.find_element(By.CSS_SELECTOR, '.cp-format-info')
+           
+            format_year_text = format_element.text.strip()
         except Exception:
             format_year_text = 'N/A'
 
-        book_dict = {
+        results.append (
+         {
             "Title": title_text,
             "Author": author_text,
             "Format-Year": format_year_text,
         }
-        results.append(book_dict)
+        )
 
     df = pd.DataFrame(results)
     print(df)
+
     df.to_csv('get_books.csv', index=False)
     print("Successfully saved data to get_books.csv")
 
