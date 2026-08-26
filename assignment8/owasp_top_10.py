@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -13,26 +14,26 @@ try:
     url = "https://owasp.org/www-project-top-ten/"
     driver.get(url)
     driver.implicitly_wait(5)
-
-    
-    vulnerbility_elements = driver.find_elements(
-        By.XPATH, "//main//ol//li//a"
-    )
-
    
-    if not vulnerbility_elements:
-        vulnerbility_elements = driver.find_elements(By.XPATH, "//main//a")
+    vulnerability_elements = driver.find_elements(
+        By.XPATH,
+       "//li[contains(@class, 'md-nav__item')]//a[contains(@href, '2025')]"
+    
+    )
+   
 
     results = []
 
     seen_titles = set()
 
-    for element in vulnerbility_elements:
+    for element in vulnerability_elements:
         title = element.text.strip()
         link = element.get_attribute("href")
 
         
-        if title and link:
+        if title and link and title not in seen_titles:
+            seen_titles.add(title)
+
             results.append({
                 "Vulnerability": title,
                 "Link": link
@@ -40,11 +41,14 @@ try:
    
     results = results[:10]
 
+    print(results)
     df = pd.DataFrame(results)
-    print(df)
+
 
     df.to_csv("owasp_top_10.csv", index=False)
+
     print("Successfully saved data to owasp_top_10.csv")
+
 
 finally:
     driver.quit()
