@@ -19,12 +19,21 @@ try:
     driver.implicitly_wait(5)
 
     book_items = driver.find_elements(
-        By.CSS_SELECTOR, 'li.cp-search-result-item'
+        By.TAG_NAME,
+        "li"
     )
 
     results = []
 
     for item in book_items:
+
+        class_name = item.get_attribute("class")
+
+        if not class_name or "cp-search-result-item" not in class_name:
+            continue
+
+        #Title
+
         try:
             title_element = item.find_element(
                 By.CSS_SELECTOR, '.title-content'
@@ -32,19 +41,23 @@ try:
             title_text = title_element.text.strip()
         except Exception:
             title_text = 'N/A'
-
+    # Authors
         try:
 
             author_elements = item.find_elements(
                 By.CSS_SELECTOR, '.author-link'
             )
+
             authors = [a.text.strip() for a in author_elements if a.text.strip()]
+
             author_text = '; '.join(authors) if authors else 'N/A'
         except Exception:
             author_text = 'N/A'
 
+
+        #Year
         try:
-            format_element = item.find_element(By.CSS_SELECTOR, '.cp-format-info')
+            format_element = item.find_element(By.CSS_SELECTOR, '.cp-format-info span')
            
             format_year_text = format_element.text.strip()
         except Exception:
@@ -62,6 +75,7 @@ try:
     print(df)
 
     df.to_csv('get_books.csv', index=False)
+
     print("Successfully saved data to get_books.csv")
 
     with open('get_books.json', 'w', encoding='utf-8') as f:

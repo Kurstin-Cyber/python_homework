@@ -12,31 +12,31 @@ driver = webdriver.Chrome(
 try:
     url = "https://owasp.org/www-project-top-ten/"
     driver.get(url)
-    driver.implicitly_wait(6)
+    driver.implicitly_wait(5)
 
     
-    risk_elements = driver.find_elements(
-        By.XPATH, "//main//a[contains(@href, 'A0') or contains(@href, '2021')]"
+    vulnerbility_elements = driver.find_elements(
+        By.XPATH, "//main//ol//li//a"
     )
 
    
-    if not risk_elements:
-        risk_elements = driver.find_elements(By.XPATH, "//main//a")
+    if not vulnerbility_elements:
+        vulnerbility_elements = driver.find_elements(By.XPATH, "//main//a")
 
     results = []
+
     seen_titles = set()
 
-    for element in risk_elements:
+    for element in vulnerbility_elements:
         title = element.text.strip()
         link = element.get_attribute("href")
 
         
-        if title and link and title not in seen_titles and len(results) < 10:
-           
-            if any(char.isdigit() for char in title) or "A0" in link:
-                seen_titles.add(title)
-                results.append({"Vulnerability": title, "Link": link})
-
+        if title and link:
+            results.append({
+                "Vulnerability": title,
+                "Link": link
+            })
    
     results = results[:10]
 
