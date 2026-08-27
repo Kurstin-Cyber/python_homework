@@ -17,7 +17,7 @@ try:
    
     vulnerability_elements = driver.find_elements(
       By.XPATH,
-        "//main//a[contains(@href, 'A0') or contains(@href, 'A10')]"
+       "//main//a[contains(@href, 'A0') or contains(@href, 'A10')]"
     )
     
 
@@ -37,7 +37,7 @@ try:
                 "Link": link
             })
    
-    results = results[:11]
+    results = results[:10]
 
     print(f"Extracted {len(results)} items successfully.")
 

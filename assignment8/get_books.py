@@ -19,21 +19,13 @@ try:
     driver.implicitly_wait(5)
 
     book_items = driver.find_elements(
-        By.TAG_NAME,
-        "li"
+        By.CSS_SELECTOR,
+        "li.cp-search-result-item"
     )
 
     results = []
 
     for item in book_items:
-
-        class_name = item.get_attribute("class")
-
-        if not class_name or "cp-search-result-item" not in class_name:
-            continue
-
-        #Title
-
         try:
             title_element = item.find_element(
                 By.CSS_SELECTOR, '.title-content'
