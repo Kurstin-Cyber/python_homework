@@ -16,11 +16,10 @@ try:
     driver.implicitly_wait(5)
    
     vulnerability_elements = driver.find_elements(
-        By.XPATH,
-       "//li[contains(@class, 'md-nav__item')]//a[contains(@href, '2025')]"
-    
+      By.XPATH,
+        "//main//a[contains(@href, 'A0') or contains(@href, '2025') or contains(@href, 'www-project-top-ten')]",
     )
-   
+    
 
     results = []
 
@@ -33,7 +32,6 @@ try:
         
         if title and link and title not in seen_titles:
             seen_titles.add(title)
-
             results.append({
                 "Vulnerability": title,
                 "Link": link
@@ -41,13 +39,17 @@ try:
    
     results = results[:10]
 
-    print(results)
+    print(f"Extracted {len(results)} items successfully.")
+
+    for item in results:
+        print(item)
+
     df = pd.DataFrame(results)
-
-
-    df.to_csv("owasp_top_10.csv", index=False)
-
-    print("Successfully saved data to owasp_top_10.csv")
+    if not df.empty:
+        df.to_csv("owasp_top_10.csv", index=False)
+        print("Successfully saved data to owasp_top_10.csv")
+    else:
+        print("Warning: DataFrame is empty. No CSV file was written.")
 
 
 finally:
