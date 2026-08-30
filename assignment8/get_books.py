@@ -14,17 +14,20 @@ driver = webdriver.Chrome(
 )
 
 try:
+    # Task 3.2 Load web page
     url = 'https://durhamcounty.bibliocommons.com/v2/search?query=learning%20spanish&searchType=smart'
     driver.get(url)
     driver.implicitly_wait(5)
 
+    # Task 3.3: Find all li elements for search results
     book_items = driver.find_elements(
         By.CSS_SELECTOR,
         "li.cp-search-result-item"
     )
-
+    #Task 3.4: Create empty results list
     results = []
 
+    #Task 3.5: Main loop to extract Title, Author, and Format-Year
     for item in book_items:
         try:
             title_element = item.find_element(
@@ -62,7 +65,7 @@ try:
             "Format-Year": format_year_text,
         }
         )
-
+    # Task 3.6: Create DataFrame and print
     df = pd.DataFrame(results)
     print(df)
 

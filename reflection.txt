@@ -1,2 +1,0 @@
-Reflection: Purpose of robots.txt and Ethical Scraping
-Websites use robots.txt files to communicate boundaries to automated scripts, preventing web scrapers from overloading servers with too many requests or indexing private/unwanted pages. Respecting these guidelines promotes ethical scraping by ensuring automated tools do not disrupt site performance, honor site owners' privacy preferences, and maintain a sustainable balance between data collection and server availabiltiy.
