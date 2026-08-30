@@ -16,8 +16,7 @@ try:
     driver.implicitly_wait(5)
    
     vulnerability_elements = driver.find_elements(
-      By.XPATH,
-       "//main//a[contains(@href, 'A0') or contains(@href, 'A10')]"
+        By.XPATH, "//main//ol//li//a | //main//table//tr//a"
     )
     
 
