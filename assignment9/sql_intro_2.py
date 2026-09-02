@@ -18,13 +18,12 @@ print("\n--- First 5 rows with the 'total' column ---")
 print(df.head())
 
 
-summary_df = df.groupby('product_id').agg(
-    total_ordered=('line_item_id', 'count'),
-    product_name=('product_name', 'first'),
-    total_revenue=('total', 'sum')
+summary_df = df.groupby('product_name').agg(
+    line_item_id=('line_item_id', 'count'),
+    total=('total', 'sum'),
 ).reset_index()
 
-print("\n--- Summary grouped by product_id ---")
+print("\n--- Summary grouped by product_name ---")
 print(summary_df.head())
 
 summary_df = summary_df.sort_values(by='product_name')

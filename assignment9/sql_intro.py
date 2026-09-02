@@ -32,8 +32,8 @@ try:
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS subscriptions (
             subscription_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            subscriber_id INTEGER,
-            magazine_id INTEGER,
+            subscriber_id INTEGER NOT NULL,
+            magazine_id INTEGER NOT NULL,
             expiration_date TEXT NOT NULL,
             FOREIGN KEY (subscriber_id) REFERENCES subscribers (subscriber_id),
             FOREIGN KEY (magazine_id) REFERENCES magazines (magazine_id)
@@ -116,10 +116,8 @@ try:
         add_subscriber(cursor, "Charlie Brown", "789 Oak St")
 
         add_subscription(cursor, "Alice Smith", "123 Main St", "Vogue", "2027-01-01")
-        add_subscription(cursor, "Alice Smith", "123 Main St", "Vogue", "2027-06-01")
-        add_subscription(cursor, "Alice Smith", "123 Main St", "Vogue", "2027-03-15")
-        add_subscription(cursor, "Alice Smith", "123 Main St", "Vogue", "2027-12-31")
-
+        add_subscription(cursor, "Bob Jones", "456 Elm St", "Cosmopolitan", "2027-06-01")
+        add_subscription(cursor, "Charlie Brown", "789 Oak St", "People", "2027-01-01")
         conn.commit()
         print("Data inserted and committed successfully.")
 except sqlite3.Error as e:
@@ -139,11 +137,11 @@ for row in cursor.fetchall():
 
 print("\n--- 3. Magazines by Publisher (Conde Nast) ---")
 cursor.execute("""
-SELECT magazines.title, publishers.name
+SELECT magazines.magazine_id, magazines.title, publishers.name
 FROM magazines
 JOIN publishers ON magazines.publisher_id = publishers.publisher_id
 WHERE publishers.name = 'Conde Nast' 
 """)
 
 for row in cursor.fetchall():
-    print(row)
+    print(f"Magazine ID: {row[0]}, Title: {row[1]}, Publisher: {row[2]}")
