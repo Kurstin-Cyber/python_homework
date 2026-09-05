@@ -1,0 +1,8 @@
+1. Restricted Sections in Wikipedia's robots.txt:
+Wikipedia restricts automated crawlers from accessing administrative paths, search results pages, history diff views, action endpoints (like api.php), and specific user or talk logs. These sections are restricted to protect private database queries, maintain server performance, and prevent automated search abuse.
+
+2. User-Agent Specific Rules:
+Wikipedia specifies different crawling rules depending on the User-Agent (such as generic "*" crawlers versus specific bots like Googlebot). Resource-intensive or generic bots are restricted from heavy directories, while authorized search indexers are granted specific permissions to index public articles without degrading site performance.
+
+3. Reflection:
+Websites utilize robots.txt to establish clear boundaries for automated traffic, protecting both server resources and user privacy. Adhering to these guidelines is fundamental to ethical scraping because it respects operational limits set by site administrators and ensures that data collection does not disrupt public access.
