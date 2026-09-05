@@ -10,13 +10,14 @@ driver = webdriver.Chrome(
 )
 
 try:
-   
-    url = "https://owasp.org/www-project-top-ten/"
+ 
+    url = "https://owasp.org/Top10/2025/"
     driver.get(url)
     driver.implicitly_wait(5)
-
+   
+   
     vulnerability_elements = driver.find_elements(
-        By.XPATH, "//main//ol//li//a | //main//ul//li//a"
+        By.XPATH, "//ol//li//a[contains(text(), 'A0')]"
     )
 
     results = []
@@ -27,29 +28,16 @@ try:
             title = element.text.strip()
             link = element.get_attribute("href")
 
-            
             if title and link and title not in seen_titles:
-                if title.startswith("A0") or "A1" in title or "Injection" in title or "Broken" in title or "Control" in title:
-                    seen_titles.add(title)
-                    results.append({"Vulnerability": title, "Link": link})
+                seen_titles.add(title)
+                results.append({
+                    "Vulnerability": title,
+                    "Link": link
+                })
         except Exception:
             continue
-
- 
-    if len(results) < 10:
-        results = []
-        seen_titles.clear()
-        for element in vulnerability_elements:
-            try:
-                title = element.text.strip()
-                link = element.get_attribute("href")
-                
-                if title and link and title not in seen_titles and ("A0" in title or "A10" in title or len(title) > 5):
-                    seen_titles.add(title)
-                    results.append({"Vulnerability": title, "Link": link})
-            except Exception:
-                continue
-
+   
+   
     results = results[:10]
 
     print(f"Extracted {len(results)} items successfully.")
