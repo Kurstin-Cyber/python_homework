@@ -3,7 +3,6 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
-import csv
 import json
 
 
@@ -31,7 +30,7 @@ try:
     for item in book_items:
         try:
             title_element = item.find_element(
-                By.CSS_SELECTOR, '.title-content'
+                By.CSS_SELECTOR, 'div.title-content'
             )
             title_text = title_element.text.strip()
         except Exception:
@@ -40,7 +39,7 @@ try:
         try:
 
             author_elements = item.find_elements(
-                By.CSS_SELECTOR, '.author-link'
+                By.CSS_SELECTOR, 'a.author-link'
             )
 
             authors = [a.text.strip() for a in author_elements if a.text.strip()]
@@ -52,7 +51,7 @@ try:
 
         #Year
         try:
-            format_element = item.find_element(By.CSS_SELECTOR, '.cp-format-info span')
+            format_element = item.find_element(By.CSS_SELECTOR, 'span.cp-format-info span')
            
             format_year_text = format_element.text.strip()
         except Exception:
