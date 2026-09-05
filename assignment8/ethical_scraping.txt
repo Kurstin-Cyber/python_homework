@@ -1,9 +1,3 @@
-1. Which sections of the website are restricted for crawling?
-Wikipedia restricts crawlers from accessing certain paths, special pages, or functional directories that aren't meant for public article browsing. This includes paths like /w/api.php for certain high-load queries, special search actins, mobile/history diff views that generate heavy server loads, and administrative or edit pages (such as /wiki/Special:).
-
-2. Are there specific rules for certain user agents?
-Yes, Wikipedia applies different rules depending on the bot. Generic web scrapers and search engine bots (User-agent: *) have standard path restrictions, while specific aggressive or poorly behaved bots, automated scrapers, or specific AI/training crawlers often have tailored blocks or tighter constraints to protect server stability and bandwidth.
-
 
 Reflection: Purpose of robots.txt and Ethical Scraping
 Websites use robots.txt files to communicate boundaries to automated scripts, preventing web scrapers from overloading servers with too many requests or indexing private/unwanted pages. Respecting these guidelines promotes ethical scraping by ensuring automated tools do not disrupt site performance, honor site owners' privacy preferences, and maintain a sustainable balance between data collection and server availabiltiy.

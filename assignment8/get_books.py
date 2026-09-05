@@ -59,12 +59,12 @@ try:
             format_year_text = 'N/A'
 
         results.append (
-         {
-            "Title": title_text,
-            "Author": author_text,
-            "Format-Year": format_year_text,
-        }
-        )
+            {
+                "Title": title_text,
+                "Author": author_text,
+                "Format-Year": format_year_text,
+            }
+            )
     # Task 3.6: Create DataFrame and print
     df = pd.DataFrame(results)
     print(df)
