@@ -17,7 +17,7 @@ try:
    
    
     vulnerability_elements = driver.find_elements(
-        By.XPATH, "//ol//li//a[contains(text(), 'A0')]"
+        By.XPATH, "//ol//li//a"
     )
 
     results = []
@@ -29,11 +29,12 @@ try:
             link = element.get_attribute("href")
 
             if title and link and title not in seen_titles:
-                seen_titles.add(title)
-                results.append({
-                    "Vulnerability": title,
-                    "Link": link
-                })
+                if title.startswith("A0") or "A10" in title:
+                    seen_titles.add(title)
+                    results.append({
+                        "Vulnerability": title,
+                        "Link": link
+                    })
         except Exception:
             continue
    

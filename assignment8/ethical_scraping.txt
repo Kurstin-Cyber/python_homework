@@ -1,10 +1,8 @@
-
-Reflection: Purpose of robots.txt and Ethical Scraping
-Websites use robots.txt files to communicate boundaries to automated scripts, preventing web scrapers from overloading servers with too many requests or indexing private/unwanted pages. Respecting these guidelines promotes ethical scraping by ensuring automated tools do not disrupt site performance, honor site owners' privacy preferences, and maintain a sustainable balance between data collection and server availabiltiy.1. Wikipedia Robots.txt Restricted Sections:
-Wikipedia's robots.txt file restricts automated scrapers and crawlers from accessing specific administrative, private, or dynamically generated paths (such as search result pages, history diff views, api.php action endpoints, and specific user/talk logs) to prevent excessive server load and protect private database queries.
+1. Restricted Sections in Wikipedia's robots.txt:
+Wikipedia restricts automated crawlers from accessing administrative paths, search results pages, history diff views, action endpoints (like api.php), and specific user or talk logs. These sections are restricted to protect private database queries, maintain server performance, and prevent automated search abuse.
 
 2. User-Agent Specific Rules:
-Wikipedia specifies different crawling rules for different User-Agents (e.g., generic "*" versus specialized bots like "Googlebot", "Yandex", or aggressive scrapers). Highly resource-intensive crawlers or generic bots are often restricted from heavy directories, while search indexers are granted specific controlled access to ensure public search functionality isn't degraded.
+Wikipedia specifies different crawling rules depending on the User-Agent (such as generic "*" crawlers versus specific bots like Googlebot). Resource-intensive or generic bots are restricted from heavy directories, while authorized search indexers are granted specific permissions to index public articles without degrading site performance.
 
-3. Reflection on Robots.txt and Ethical Scraping:
-Websites utilize robots.txt to communicate explicit boundaries to automated bots, protecting server performance and user privacy. Adhering to these guidelines is fundamental to ethical scraping because it respects site administrators' operational limits and ensures that automated data collection does not disrupt public access or infringe upon restricted data.
+3. Reflection:
+Websites utilize robots.txt to establish clear boundaries for automated traffic, protecting both server resources and user privacy. Adhering to these guidelines is fundamental to ethical scraping because it respects operational limits set by site administrators and ensures that data collection does not disrupt public access.
