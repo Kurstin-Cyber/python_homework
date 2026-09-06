@@ -99,18 +99,18 @@ except Exception as e:
 
 
 
-query_task4 = """
-SELECT e.employee_id, e.first_name, e.last_name, COUNT(o.order_id) AS order_count
-FROM employees AS e
-JOIN orders AS o ON e.employee_id = o.employee_id
-GROUP BY e.employee_id, e.first_name, e.last_name
-HAVING COUNT(o.order_id) > 5;
-"""
-cursor.execute(query_task4)
-results_task4 = cursor.fetchall()
+    query_task4 = """
+    SELECT e.employee_id, e.first_name, e.last_name, COUNT(o.order_id) AS order_count
+    FROM employees AS e
+    JOIN orders AS o ON e.employee_id = o.employee_id
+    GROUP BY e.employee_id, e.first_name, e.last_name
+    HAVING COUNT(o.order_id) > 5;
+    """
+    cursor.execute(query_task4)     
+    results_task4 = cursor.fetchall()
 
-print("\nTask 4 Results (Employees with > 5 Orders):")
-for row in results_task4:
-    emp_id, first_name, last_name, order_count = row
-print(f"Employee ID: {emp_id} | Name: {first_name} {last_name} | Order Count: {order_count}")
-conn.close()
+    print("\nTask 4 Results (Employees with > 5 Orders):")
+    for row in results_task4:
+        emp_id, first_name, last_name, order_count = row
+    print(f"Employee ID: {emp_id} | Name: {first_name} {last_name} | Order Count: {order_count}")
+    conn.close()
