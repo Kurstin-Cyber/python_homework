@@ -1,9 +1,13 @@
 import sqlite3
 
 db_path = "../db/lesson.db"
+
 conn = sqlite3.connect(db_path)
+conn.execute("PRAGMA foreign_keys = 1")
 cursor = conn.cursor()
 
+
+# Task 1: Complex JOINs with Aggregation
 
 query = """
     SELECT o.order_id, SUM(p.price * li.quantity) AS total_price
@@ -22,6 +26,7 @@ for row in results:
     order_id, total_price = row
     print(f"Order ID: {order_id} | Total Price: ${total_price:.2f}")
 
+# Task 2: Understanding Subqueries
 
 
 query_task2 = """
@@ -46,9 +51,10 @@ for row in results_task2:
     print(f"Customer: {customer_name} | Average Order Total: {display_avg}")
 
 
+# Task 3: An Insert Transaction Based on Data
 
 try:
-    conn.execute("PRAGMA foreign_keys = 1")
+
     cursor = conn.cursor()
 
     cursor.execute("SELECT customer_id FROM customers WHERE customer_name = 'Perez and Sons';")
@@ -63,7 +69,7 @@ try:
     product_rows = cursor.fetchall()
     product_ids = [row[0] for row in product_rows]
 
-    if not customer_id or not employee_id or len(product_ids) < 5:
+    if customer_id is None or employee_id is None or len(product_ids) < 5:
         raise ValueError("Could not find required customer, employee, or 5 products.")
     
     cursor.execute("INSERT INTO orders (customer_id, employee_id) VALUES (?, ?) RETURNING order_id;", (customer_id, employee_id))
@@ -99,6 +105,7 @@ except Exception as e:
     print(f"\nTask 3 Transaction Failed & Rolled Back: {e}")
 
 
+# Task 4: Aggregation with HAVING
 
 query_task4 = """
 SELECT e.employee_id, e.first_name, e.last_name, COUNT(o.order_id) AS order_count
