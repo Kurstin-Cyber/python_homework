@@ -54,8 +54,8 @@ for row in results_task2:
 # Task 3: An Insert Transaction Based on Data
 
 try:
-
-    cursor = conn.cursor()
+    cursor.execute("Begin Transaction;")
+    
 
     cursor.execute("SELECT customer_id FROM customers WHERE customer_name = 'Perez and Sons';")
     customer_row = cursor.fetchone()
@@ -72,7 +72,7 @@ try:
     if customer_id is None or employee_id is None or len(product_ids) < 5:
         raise ValueError("Could not find required customer, employee, or 5 products.")
     
-    cursor.execute("INSERT INTO orders (customer_id, employee_id) VALUES (?, ?) RETURNING order_id;", (customer_id, employee_id))
+    cursor.execute("INSERT INTO orders (customer_id, employee_id, order_date) VALUES (?, ?) RETURNING order_id;", (customer_id, employee_id))
     new_order_id = cursor.fetchone()[0]
 
     for prod_id in product_ids:
@@ -94,8 +94,6 @@ try:
     verification_results = cursor.fetchall()
 
     print(f"Line items for Order ID {new_order_id}:")
-    
-   
     for item in verification_results:
         li_id, qty, prod_name = item
         print(f" - Line Item ID: {li_id} | Product: {prod_name} | Qty: {qty}")
@@ -112,7 +110,8 @@ SELECT e.employee_id, e.first_name, e.last_name, COUNT(o.order_id) AS order_coun
 FROM employees AS e
 JOIN orders AS o ON e.employee_id = o.employee_id
 GROUP BY e.employee_id, e.first_name, e.last_name
-HAVING COUNT(o.order_id) > 5;
+HAVING COUNT(o.order_id) > 5
+ORDER BY order_count DESC;
 """
 cursor.execute(query_task4)     
 results_task4 = cursor.fetchall()
