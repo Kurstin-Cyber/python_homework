@@ -33,7 +33,7 @@ query_task2 = """
 SELECT c.customer_name, AVG(sub.total_price) AS average_total_price
 FROM customers AS c
 LEFT JOIN (
-    SELECT o.customer_id AS customer_id_b, SUM(p.price * li.quantity) AS total_price
+    SELECT o.customer_id AS customer_id_b, SUM(p.price * li.quantity) AS total_price 
     FROM orders AS o
     JOIN line_items AS li ON o.order_id = li.order_id
     JOIN products AS p ON li.product_id = p.product_id
@@ -72,7 +72,7 @@ try:
     if customer_id is None or employee_id is None or len(product_ids) < 5:
         raise ValueError("Could not find required customer, employee, or 5 products.")
     
-    cursor.execute("INSERT INTO orders (customer_id, employee_id, order_date) VALUES (?, ?) RETURNING order_id;", (customer_id, employee_id))
+    cursor.execute("INSERT INTO orders (date, customer_id, employee_id) VALUES (?, ?) RETURNING order_id;", (customer_id, employee_id))
     new_order_id = cursor.fetchone()[0]
 
     for prod_id in product_ids:
